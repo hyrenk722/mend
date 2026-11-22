@@ -792,7 +792,7 @@ function run(args: string[]): { code: number; out: string[] } {
   try {
     text = readFileSync(file ?? 0, 'utf8');
   } catch {
-    if (file !== null) return { code: 2, out: ['error: no-patch'] };
+    return { code: 2, out: ['error: no-patch'] };
   }
   const lines = patchLines(text);
   const kind = format === null || format === 'auto' ? detect(lines) : format;
