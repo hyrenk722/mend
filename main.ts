@@ -792,6 +792,7 @@ function run(args: string[]): { code: number; out: string[] } {
   try {
     text = readFileSync(file ?? 0, 'utf8');
   } catch {
+    // A failed read means no patch input reached us at all, so SPEC section 2 classifies it as no-patch rather than a format error.
     return { code: 2, out: ['error: no-patch'] };
   }
   const lines = patchLines(text);
