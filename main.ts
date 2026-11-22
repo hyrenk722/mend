@@ -314,12 +314,12 @@ function unifiedEdits(lines: string[], strict: boolean): Edit[] {
         continue;
       }
       if (l.startsWith('rename from ')) {
-        cur.renOld = stripAB(l.slice('rename from '.length).trim());
+        cur.renOld = l.slice('rename from '.length).trim();
         i++;
         continue;
       }
       if (l.startsWith('rename to ')) {
-        cur.renNew = stripAB(l.slice('rename to '.length).trim());
+        cur.renNew = l.slice('rename to '.length).trim();
         i++;
         continue;
       }
@@ -602,7 +602,10 @@ function v4aEdits(lines: string[], strict: boolean): Edit[] {
           continue;
         }
         if (c.startsWith(' ') || c.startsWith('-') || c.startsWith('+') || c === '') {
-          if (cur === null) cur = { anchor: null, body: [], eof: false };
+          if (cur === null) {
+            if (chunks.length > 0) throw new Exit2(`error: parse ${j + 1}`);
+            cur = { anchor: null, body: [], eof: false };
+          }
           cur.body.push(c);
           j++;
           continue;
